@@ -14,19 +14,19 @@ router.get("/", async (req, res) => {
 });
 
 
-router.get("/:id", async (req, res) => {
+router.get("/:cid", async (req, res) => {
     try{
-        const cart = await cartManager.getOneById(req.params?.id);
+        const cart = await cartManager.getOneById(req.params?.cid);
         res.status(200).json({ status: "success", payload: cart});
     }catch(error){
         res.status(error.code || 500).json({status: "error", message:error.message});
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/:cid/product/:pid", async (req, res) => {
     try{
-        const cart = await cartManager.insertOne(req.body);
-        res.status(201).json({ status: "success", payload: cart});
+        const updateCart = await cartManager.addProductToCart(req.params.cid,req.params.pid);
+        res.status(201).json({ status: "success", payload: updateCart});
     }catch(error){
         res.status(error.code || 500).json({status: "error", message:error.message});
     }

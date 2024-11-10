@@ -12,9 +12,9 @@ export default class cartManager{
         this.#jsonFilename = "carts.json";
     }
 
-    async $findOneById(id){
+    async $findOneById(cid){
         this.#carts = await this.getAll();
-        const cartsFound = this.#carts.find((item) => item.id === Number(id));
+        const cartsFound = this.#carts.find((item) => item.id === Number(cid));
 
         if(!cartsFound){
             throw new ErrorManager("Id no encontrado",404);
@@ -31,9 +31,9 @@ export default class cartManager{
     }
 }
 
-    async getOneById(id){
+    async getOneById(cid){
         try{
-            const cartsFound = await this.$findOneById(id);
+            const cartsFound = await this.$findOneById(cid);
             return cartsFound;
         }catch(error){
             throw new ErrorManager(error.message, error.code);
@@ -60,4 +60,22 @@ export default class cartManager{
         throw new ErrorManager(error.message, error.code);
   }
 }
+
+    async addProductToCart(cid,pid){
+        try{
+            const cart = await this.$findOneById(cid);
+            const productIndex = cart.products.findIndex((item)=> item.product === Number(pid));
+
+            if(productIndex !== -1){
+                cart.products[productIndex].quantity +=1;
+            }else{
+                cart.products.push({product: Number(pid),quantity:1});
+            }
+            await writeJsonFile(paths.files, this.#jsonFilename, this.#carts);
+            return cart;
+            
+        }catch(error){
+            throw new ErrorManager(error.message, error.code);
+        }
+    }
 }

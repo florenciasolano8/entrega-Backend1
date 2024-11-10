@@ -2,6 +2,7 @@ import paths from "/paths.js";
 import {readJsonFile, writeJsonFile} from "../utils/fileHandler.js";
 import {generateId} from "../utils/collectionHandler.js";
 import {convertToBool} from "../utils/converter.js";
+import ErrorManager from "./ErrorManager.js";
 
 
 export default class ProductManager{
@@ -17,7 +18,7 @@ export default class ProductManager{
         const productsFound = this.#products.find((item) => item.id === Number(id));
 
         if(!productsFound){
-            throw new Error("Id no encontrado");
+            throw new ErrorManager("Id no encontrado",404);
         }
     }
 
@@ -26,7 +27,7 @@ export default class ProductManager{
         this.#products = await readJsonFile(paths.files, this.#jsonFilename);
         return this. #products;
     }catch(error){
-        throw new Error("Falla obtener todos");
+        throw new ErrorManager(error.message, error.code);
     }
 }
 
@@ -35,8 +36,8 @@ export default class ProductManager{
             const productsFound = await this.$findOneById(id);
             return productsFound;
         }catch(error){
-            throw new Error("Falla obtener todos");
-    }
+            throw new ErrorManager(error.message, error.code);
+        }
     }
 
 
@@ -44,7 +45,7 @@ export default class ProductManager{
     try{
         const {title, status, stock} = data;
         if (!title || status === null || status === undefined || !stock){
-            throw new Error("Faltan datos obligatorios");
+            throw new ErrorManager("Faltan datos obligatorios",400);
         }
         const product = {
             id: generateId(await this.getAll()),
@@ -58,7 +59,7 @@ export default class ProductManager{
         return product;
 
     }catch(error){
-        throw new Error("Falla obtener todos");
+        throw new ErrorManager(error.message, error.code);
   }
 }
 
@@ -81,7 +82,7 @@ async updateOneById(id,data){
         return product;
 
     }catch(error){
-        throw new Error("Falla obtener todos");
+        throw new ErrorManager(error.message, error.code);
   }
 }
 
@@ -96,7 +97,7 @@ async deleteOneById(id){
         return product;
 
     }catch(error){
-        throw new Error("Falla obtener todos");
+        throw new ErrorManager(error.message, error.code);
   }
 }
 }

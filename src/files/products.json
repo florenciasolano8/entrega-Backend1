@@ -6,12 +6,6 @@
 		"stock": "52"
 	},
 	{
-		"id": 4,
-		"title": "prueba2",
-		"status": "true",
-		"stock": "52"
-	},
-	{
 		"id": 7,
 		"title": "prueba2",
 		"status": "true",
@@ -70,6 +64,28 @@
 		"status": true,
 		"stock": 52,
 		"category": "inventado",
+		"thumbnails": []
+	},
+	{
+		"id": 13,
+		"title": "prueban2",
+		"description": "descripcion de prueban2",
+		"code": "codeprueban2\n",
+		"price": 112,
+		"status": true,
+		"stock": 41,
+		"category": "eleccion",
+		"thumbnails": []
+	},
+	{
+		"id": 14,
+		"title": "modificadon3",
+		"description": "descripcion de pruebas",
+		"code": "codepruebaactu",
+		"price": 160,
+		"status": true,
+		"stock": 41,
+		"category": "eleccion",
 		"thumbnails": []
 	}
 ]

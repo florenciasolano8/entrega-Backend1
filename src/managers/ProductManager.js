@@ -72,7 +72,7 @@ export default class ProductManager{
 
 async updateOneById(pid,data){
     try{
-        const productsFound = await this.$findOneById(id);
+        const productsFound = await this.$findOneById(pid);
 
         const product = {
             id:productsFound.id,

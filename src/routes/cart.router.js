@@ -1,22 +1,35 @@
 import { Router } from "express";
+import CartManager from "../managers/CartManager.js";
 
 const router = Router();
-const users = [];
+const cartManager = new CartManager();
 
-router.get("/", (req, res) => {
-    res.status(200).json({ status: "success", users });
+router.get("/", async (req, res) => {
+    try{
+        const carts = await cartManager.getAll();
+        res.status(200).json({ status: "success", payload: carts });
+    }catch(error){
+        res.status(error.code || 500).json({status: "error", message:error.message});
+    }
 });
 
-router.post("/",(req, res) => {
-    const { name, surname } = req.body;
 
-    const user = {
-        name,
-        surname
-    };
+router.get("/:id", async (req, res) => {
+    try{
+        const cart = await cartManager.getOneById(req.params?.id);
+        res.status(200).json({ status: "success", payload: cart});
+    }catch(error){
+        res.status(error.code || 500).json({status: "error", message:error.message});
+    }
+});
 
-    users.push(user);
-    res.status(200).json({ status: "success", user });
+router.post("/", async (req, res) => {
+    try{
+        const cart = await cartManager.insertOne(req.body);
+        res.status(201).json({ status: "success", payload: cart});
+    }catch(error){
+        res.status(error.code || 500).json({status: "error", message:error.message});
+    }
 });
 
 export default router;

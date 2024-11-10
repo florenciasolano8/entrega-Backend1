@@ -13,9 +13,9 @@ export default class ProductManager{
         this.#jsonFilename = "products.json";
     }
 
-    async $findOneById(id){
+    async $findOneById(pid){
         this.#products = await this.getAll();
-        const productsFound = this.#products.find((item) => item.id === Number(id));
+        const productsFound = this.#products.find((item) => item.id === Number(pid));
 
         if(!productsFound){
             throw new ErrorManager("Id no encontrado",404);
@@ -32,9 +32,9 @@ export default class ProductManager{
     }
 }
 
-    async getOneById(id){
+    async getOneById(pid){
         try{
-            const productsFound = await this.$findOneById(id);
+            const productsFound = await this.$findOneById(pid);
             return productsFound;
         }catch(error){
             throw new ErrorManager(error.message, error.code);
@@ -44,15 +44,20 @@ export default class ProductManager{
 
     async insertOne(data){
     try{
-        const {title, status, stock} = data;
-        if (!title || !status || !stock){
+        const {title,description,code,price,stock,category,thumbnails, status} = data;
+        if (!title || !description || !code || !price || !stock || !category){
             throw new ErrorManager("Faltan datos obligatorios",400);
         }
         const product = {
             id: generateId(await this.getAll()),
             title,
-            status,
-            stock,
+            description,
+            code,
+            price: Number(price),
+            status: convertToBool(status),
+            stock:Number(stock),
+            category,
+            thumbnails: thumbnails || [],
         };
 
         this.#products.push(product);
@@ -65,19 +70,23 @@ export default class ProductManager{
 }
 
 
-async updateOneById(id,data){
+async updateOneById(pid,data){
     try{
-        const {title, status, stock} = data;
         const productsFound = await this.$findOneById(id);
 
         const product = {
             id:productsFound.id,
-            title: title || productsFound.title,
-            status: status ? convertToBool(status) : productsFound.status,
-            stock: stock ? Number(stock) : productsFound.stock,
+            title: data.title || productsFound.title,
+            description: data.description || productsFound.description,
+            code: data.code || productsFound.code,
+            price: data.price !== undefined ? Number(data.price) : productsFound.price, 
+            status: data.status !== undefined ? convertToBool(data.status) : productsFound.status,
+            stock: data.stock !== undefined ? Number(data.stock) : productsFound.stock,
+            category:data.category || productsFound.category,
+            thumbnails: data.thumbnails || productsFound.thumbnails
         };
 
-        const index = this.#products.findIndex((item)=> item.id === Number(id));
+        const index = this.#products.findIndex((item)=> item.id === Number(pid));
         this.#products[index]= product;
         await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
         return product;
@@ -88,11 +97,11 @@ async updateOneById(id,data){
 }
 
 
-async deleteOneById(id){
+async deleteOneById(pid){
     try{
-         await this.$findOneById(id);
+         await this.$findOneById(pid);
 
-        const index = this.#products.findIndex((item)=> item.id === Number(id));
+        const index = this.#products.findIndex((item)=> item.id === Number(pid));
         this.#products.splice(index,1);
         await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
     }catch(error){

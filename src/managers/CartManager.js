@@ -19,7 +19,7 @@ export default class cartManager{
         if(!cartsFound){
             throw new ErrorManager("Id no encontrado",404);
         }
-        return cartsFound
+        return cartsFound;
     }
 
     async getAll(){
@@ -43,15 +43,13 @@ export default class cartManager{
 
     async insertOne(data){
     try{
-        const {title, status, stock} = data;
-        if (!title || status === null || status === undefined || !stock){
-            throw new ErrorManager("Faltan datos obligatorios",400);
-        }
+        const products = data?.products?.map(((item)=>{
+            return {product: Number(item.product), quantity: 1};
+        }));
+
         const cart = {
             id: generateId(await this.getAll()),
-            title,
-            status,
-            stock,
+            products : products || [],
         };
 
         this.#carts.push(cart);

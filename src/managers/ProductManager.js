@@ -1,4 +1,4 @@
-import paths from "/paths.js";
+import paths from "../utils/paths.js";
 import {readJsonFile, writeJsonFile} from "../utils/fileHandler.js";
 import {generateId} from "../utils/collectionHandler.js";
 import {convertToBool} from "../utils/converter.js";
@@ -20,6 +20,7 @@ export default class ProductManager{
         if(!productsFound){
             throw new ErrorManager("Id no encontrado",404);
         }
+        return productsFound;
     }
 
     async getAll(){
@@ -44,7 +45,7 @@ export default class ProductManager{
     async insertOne(data){
     try{
         const {title, status, stock} = data;
-        if (!title || status === null || status === undefined || !stock){
+        if (!title || !status || !stock){
             throw new ErrorManager("Faltan datos obligatorios",400);
         }
         const product = {
@@ -94,8 +95,6 @@ async deleteOneById(id){
         const index = this.#products.findIndex((item)=> item.id === Number(id));
         this.#products.splice(index,1);
         await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
-        return product;
-
     }catch(error){
         throw new ErrorManager(error.message, error.code);
   }

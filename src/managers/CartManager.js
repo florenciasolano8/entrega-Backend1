@@ -1,4 +1,4 @@
-import paths from "/paths.js";
+import paths from "../utils/paths.js";
 import {readJsonFile, writeJsonFile} from "../utils/fileHandler.js";
 import {generateId} from "../utils/collectionHandler.js";
 import ErrorManager from "./ErrorManager.js";
@@ -19,6 +19,7 @@ export default class cartManager{
         if(!cartsFound){
             throw new ErrorManager("Id no encontrado",404);
         }
+        return cartsFound
     }
 
     async getAll(){

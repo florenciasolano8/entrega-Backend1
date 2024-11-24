@@ -12,6 +12,17 @@ export default class cartManager{
         this.#jsonFilename = "carts.json";
     }
 
+
+    async  productExists(pid){
+        try{
+            const products= await readJsonFile(paths.files,"products.json");
+            return products.some(product => product.id === Number(pid));
+        } catch(error){
+            throw new ErrorManager("Error al leer los productos",500);
+        }
+    }
+
+
     async $findOneById(cid){
         this.#carts = await this.getAll();
         const cartsFound = this.#carts.find((item) => item.id === Number(cid));
@@ -25,7 +36,7 @@ export default class cartManager{
     async getAll(){
     try{
         this.#carts = await readJsonFile(paths.files, this.#jsonFilename);
-        return this. #carts;
+        return this.#carts;
     }catch(error){
         throw new ErrorManager(error.message, error.code);
     }
@@ -63,6 +74,11 @@ export default class cartManager{
 
     async addProductToCart(cid,pid){
         try{
+            const productExists = await this.productExists(pid);
+            if(!productExists){
+                throw new ErrorManager("Producto no encontrado",404);
+            }
+
             const cart = await this.$findOneById(cid);
             const productIndex = cart.products.findIndex((item)=> item.product === Number(pid));
 
@@ -73,7 +89,6 @@ export default class cartManager{
             }
             await writeJsonFile(paths.files, this.#jsonFilename, this.#carts);
             return cart;
-            
         }catch(error){
             throw new ErrorManager(error.message, error.code);
         }

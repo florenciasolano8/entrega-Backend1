@@ -1,0 +1,30 @@
+<header>
+    <h1>Home - Productos en Tiempo Real</h1>
+</header>
+
+<main>
+    <section>
+        <h3>Productos</h3>
+    <div>
+        <ul id="products-list"></ul>
+    </div>
+    </section>
+
+    <section>
+        <h3>Formulario de productos</h3>
+<form id="products-form">
+    <input type="text" name="title" placeholder="Ingresa el nombre" required>
+    <input type="text" name="description" placeholder="Ingresa la descripción" required>
+    <input type="text" name="code" placeholder="Ingresa el código" required>
+    <input type="number" name="price" placeholder="Ingresa el precio" required>
+    <input type="number" name="stock" placeholder="Ingresa el stock" required>
+    <input type="text" name="category" placeholder="Ingresa la categoría" required>
+    <div>¿Está activo? <input type="checkbox" name="status"></div>
+    <input type="submit" value="Guardar">
+</form>
+    </section>
+    <p id="error-message" style="color: rgb(86, 207, 0)"></p>
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/api/public/js/products.socket.js"></script>

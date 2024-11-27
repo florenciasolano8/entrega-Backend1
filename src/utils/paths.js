@@ -14,6 +14,8 @@ const paths = {
     public: path.join(SRC_PATH, "public"),
     images: path.join(SRC_PATH, "public", "images"),
     files: path.join(SRC_PATH, "files"),
+    views: path.join(SRC_PATH, "views"), // Ruta del vistas de Handlebars
+
 
 };
 

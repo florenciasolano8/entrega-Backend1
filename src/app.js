@@ -1,8 +1,12 @@
 import express from "express";
+import { config as configHandlebars } from "./config/handlebars.config.js";
+import { config as configWebsocket } from "./config/websocket.config.js";
 
 // Importación de enrutadores
 import routerProducts from "./routes/products.router.js";
 import routerCart from "./routes/cart.router.js";
+import routerViewHome from "./routes/home.view.router.js";
+
 
 // Se crea una instancia de la aplicación Express
 const app = express();
@@ -20,11 +24,24 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware para acceder al contenido JSON de las solicitudes
 app.use(express.json());
 
+// Configuración del motor de plantillas
+configHandlebars(app);
+
 // Declaración de rutas
 app.use('/api/products', routerProducts);
 app.use('/api/cart', routerCart);
+app.use('/', routerViewHome);
+
+
+// Control de rutas inexistentes
+app.use("*", (req, res) => {
+    res.status(404).render("error404", { title: "Error 404" });
+});
 
 // Se levanta el servidor oyendo en el puerto definido
-app.listen(PORT, () => {
+const httpServer = app.listen(PORT, () => {
     console.log(`Ejecutándose en http://localhost:${PORT}`);
 });
+
+// Configuración del servidor de websocket
+configWebsocket(httpServer);

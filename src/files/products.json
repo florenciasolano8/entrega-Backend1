@@ -87,27 +87,5 @@
 		"stock": 41,
 		"category": "eleccion",
 		"thumbnails": []
-	},
-	{
-		"id": 15,
-		"title": "prueban2",
-		"description": "descripcion de prueban2",
-		"code": "codeprueban2\n",
-		"price": 112,
-		"status": true,
-		"stock": 41,
-		"category": "eleccion",
-		"thumbnails": []
-	},
-	{
-		"id": 16,
-		"title": "lona",
-		"description": "verde",
-		"code": "JVWCO29",
-		"price": 200,
-		"status": true,
-		"stock": 5,
-		"category": "telas",
-		"thumbnails": []
 	}
 ]

@@ -3,6 +3,8 @@ const socket = io();
 
 const productsList = document.getElementById("products-list");
 const productsForm = document.getElementById("products-form");
+const inputProductId = document.getElementById("input-product-id");
+const btnDeleteProduct = document.getElementById("btn-delete-product");
 const errorMessage = document.getElementById("error-message");
 
 
@@ -34,6 +36,17 @@ productsForm.addEventListener("submit",(event)=>{
         status: formdata.get("status") || "off",
       });
     });
+
+    btnDeleteProduct.addEventListener("click",()=>{
+        const id = inputProductId.value;
+        inputProductId.innerText="";
+        errorMessage.innerText="";
+    
+        if(id>0){
+            socket.emit("delete-products",{id});
+        }
+        });
+
 
     socket.on("error-message", (data)=>{
         errorMessage.innerText = data.message;

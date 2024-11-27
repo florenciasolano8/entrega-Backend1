@@ -22,6 +22,18 @@ export const config = (httpServer) => {
             }
         });
 
+        socket.on("delete-products", async (data) => {
+            try {
+                await productManager.deleteOneById(data.id);
+                socketServer.emit("products-list", { products: await productManager.getAll() });
+            } catch (error) {
+                socketServer.emit("error-message", { message: error.message });
+            }
+        });
+
+
+
+
         socket.on("disconnect", () => {
             console.log("Se desconecto un cliente", socket.id); 
         });

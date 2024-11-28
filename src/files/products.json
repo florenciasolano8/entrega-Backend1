@@ -87,5 +87,38 @@
 		"stock": 41,
 		"category": "eleccion",
 		"thumbnails": []
+	},
+	{
+		"id": 15,
+		"title": "prod1",
+		"description": "verde",
+		"code": "123",
+		"price": 100,
+		"status": true,
+		"stock": 20,
+		"category": "prueba",
+		"thumbnails": []
+	},
+	{
+		"id": 16,
+		"title": "ds",
+		"description": "ds",
+		"code": "ds",
+		"price": 23,
+		"status": true,
+		"stock": 23,
+		"category": "2",
+		"thumbnails": []
+	},
+	{
+		"id": 17,
+		"title": "a",
+		"description": "a",
+		"code": "12",
+		"price": 12,
+		"status": true,
+		"stock": 3,
+		"category": "b",
+		"thumbnails": []
 	}
 ]

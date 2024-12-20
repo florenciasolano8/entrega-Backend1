@@ -32,4 +32,13 @@ router.post("/:cid/product/:pid", async (req, res) => {
     }
 });
 
+router.post("/", async (req, res) => {
+    try {
+        const newCart = await cartManager.createCart();
+        res.status(201).json({ status: "success", payload: newCart });
+    } catch (error) {
+        res.status(error.code || 500).json({ status: "error", message: error.message });
+    }
+});
+
 export default router;

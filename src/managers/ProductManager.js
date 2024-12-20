@@ -1,111 +1,105 @@
-import paths from "../utils/paths.js";
-import {readJsonFile, writeJsonFile} from "../utils/fileHandler.js";
-import {generateId} from "../utils/collectionHandler.js";
-import {convertToBool} from "../utils/converter.js";
 import ErrorManager from "./ErrorManager.js";
+import { isValidID } from "../config/mongoose.config.js";
+import ProductModel from "../models/product.model.js";
+import { convertToBoolean } from "../utils/converter.js";
 
+export default class ProductManager {
+    #product;
 
-export default class ProductManager{
-    #jsonFilename;
-    #products;
-
-    constructor(){
-        this.#jsonFilename = "products.json";
+    constructor() {
+        this.#product = ProductModel;
     }
 
-    async $findOneById(pid){
-        this.#products = await this.getAll();
-        const productsFound = this.#products.find((item) => item.id === Number(pid));
-
-        if(!productsFound){
-            throw new ErrorManager("Id no encontrado",404);
+    // Busca un producte por su ID
+    async #findOneById(id) {
+        if (!isValidID(id)) {
+            throw new ErrorManager("ID inválido", 400);
         }
-        return productsFound;
+
+        const productFound = await this.#product.findById(id);
+
+        if (!productFound) {
+            throw new ErrorManager("ID no encontrado", 404);
+        }
+
+        return productFound;
     }
 
-    async getAll(){
-    try{
-        this.#products = await readJsonFile(paths.files, this.#jsonFilename);
-        return this. #products;
-    }catch(error){
-        throw new ErrorManager(error.message, error.code);
-    }
-}
+    // Obtiene una lista de prod
+    async getAll(params) {
+        try {
+            const $and = [];
 
-    async getOneById(pid){
-        try{
-            const productsFound = await this.$findOneById(pid);
-            return productsFound;
-        }catch(error){
-            throw new ErrorManager(error.message, error.code);
+            if (params?.title) $and.push({ title: { $regex: params.title, $options: "i" } });
+            const filters = $and.length > 0 ? { $and } : {};
+
+            const sort = {
+                asc: { title: 1 },
+                desc: { title: -1 },
+            };
+
+            const paginationOptions = {
+                limit: params?.limit || 10, // Número de documentos por página (por defecto 10)
+                page: params?.page || 1, // Página actual (por defecto 1)
+                sort: sort[params?.sort] ?? {}, // Ordenamiento (sin orden por defecto)
+                lean: true, // Convertir los resultados en objetos planos
+            };
+
+            return await this.#product.paginate(filters, paginationOptions);
+        } catch (error) {
+            throw ErrorManager.handleError(error);
         }
     }
 
-
-    async insertOne(data){
-    try{
-        const {title,description,code,price,stock,category,thumbnails, status} = data;
-        if (!title || !description || !code || !price || !stock || !category){
-            throw new ErrorManager("Faltan datos obligatorios",400);
+    // Obtiene un prod específico por su ID
+    async getOneById(id) {
+        try {
+            return await this.#findOneById(id);
+        } catch (error) {
+            throw ErrorManager.handleError(error);
         }
-        const product = {
-            id: generateId(await this.getAll()),
-            title,
-            description,
-            code,
-            price: Number(price),
-            status: convertToBool(status),
-            stock:Number(stock),
-            category,
-            thumbnails: thumbnails || [],
-        };
+    }
 
-        this.#products.push(product);
-        await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
-        return product;
+    // Inserta un producto
+    async insertOne(data) {
+        try {
+            const product = await this.#product.create({
+                ...data,
+                status: convertToBoolean(data.status),
+            });
 
-    }catch(error){
-        throw new ErrorManager(error.message, error.code);
-  }
-}
+            return product;
+        } catch (error) {
+            throw ErrorManager.handleError(error);
+        }
+    }
 
+    // Actualiza un prod en específico
+    async updateOneById(id, data) {
+        try {
+            const product = await this.#findOneById(id);
+            const newValues = {
+                ...product,
+                ...data,
+                status: data.status ? convertToBoolean(data.status) : product.status,
+            };
 
-async updateOneById(pid,data){
-    try{
-        const productsFound = await this.$findOneById(pid);
+            product.set(newValues);
+            product.save();
 
-        const product = {
-            id:productsFound.id,
-            title: data.title || productsFound.title,
-            description: data.description || productsFound.description,
-            code: data.code || productsFound.code,
-            price: data.price !== undefined ? Number(data.price) : productsFound.price, 
-            status: data.status !== undefined ? convertToBool(data.status) : productsFound.status,
-            stock: data.stock !== undefined ? Number(data.stock) : productsFound.stock,
-            category:data.category || productsFound.category,
-            thumbnails: data.thumbnails || productsFound.thumbnails
-        };
+            return product;
+        } catch (error) {
+            throw ErrorManager.handleError(error);
+        }
+    }
 
-        const index = this.#products.findIndex((item)=> item.id === Number(pid));
-        this.#products[index]= product;
-        await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
-        return product;
-
-    }catch(error){
-        throw new ErrorManager(error.message, error.code);
-  }
-}
-
-
-async deleteOneById(pid){
-    try{
-         await this.$findOneById(pid);
-
-        const index = this.#products.findIndex((item)=> item.id === Number(pid));
-        this.#products.splice(index,1);
-        await writeJsonFile(paths.files, this.#jsonFilename, this.#products);
-    }catch(error){
-        throw new ErrorManager(error.message, error.code);
-  }
-}
+    // Elimina un prod en específico
+    async deleteOneById(id) {
+        try {
+            const product = await this.#findOneById(id);
+            await product.deleteOne();
+        } catch (error) {
+            throw ErrorManager.handleError(error);
+        }
+    }
 }

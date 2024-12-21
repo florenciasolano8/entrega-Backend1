@@ -1,16 +1,55 @@
-<header>
-    <h1>Home - Productos</h1>
-</header>
+<div class="container-titles">
+    <h1 class="title">Todos los productos</h1>
+</div>
+<div>
+    <label for="category" class="input-text">Categoría: </label>
+    <select id="category" name="category" class="select-category">
+        <option value="black">BLACK</option>
+        <option value="red">RED</option>
+        <option value="pink">PINK</option>
+    </select>
 
-<main>
-    <section>
-        <h3>Productos</h3>
-    <div>
-        <ul id="products-list"></ul>
-    </div>
-    <button id="btn-refresh-products-list">Actualizar Lista</button>
-    </section>
-</main>
+    <label for="sort" class="input-text">Ordenar por: </label>
 
+    <select id="sort" name="sort">
+        <option value="">Seleccionar..</option>
+        <option value="asc">Precio: Menor a Mayor</option>
+        <option value="desc">Precio: Mayor a Menor</option>
+    </select>
+</div>
+
+<div>
+    {{#each products.docs}}
+        <div class="products">
+            <div>
+                {{this.thumbnail}}
+            </div>
+            <ul>
+                <li>Nombre: {{this.title}}</li>
+                <li>Precio: {{this.price}} {{#if this.esCostoso}}(El producto es costoso){{/if}}</li>
+                <li>Categoría: {{this.category}}</li>
+                <li>Descripción: {{this.description}}</li>
+                <li>dinero: {{this.currency}}</li>
+                <li>Estado: {{this.status}}</li>
+                <li>Stock: {{this.stock}}</li>
+                <li>Código: {{this.code}}</li>
+                <li><a href="/{{this._id}}" >Detalles</a></li>
+                <li><button data-product-id="{{this._id}}">Añadir al carrito 🛒</button></li>
+            </ul>
+        </div>
+    {{/each}}
+</div>
+
+
+<div class="pagina">
+    <button id="ant-page" {{#unless products.hasPrevPage}}disabled{{/unless}}>Página Anterior</button>
+    <span>Página actual: {{products.page}} de {{products.totalPages}}</span>
+    <button id="sig-page" {{#unless products.hasNextPage}}disabled{{/unless}}>Página Siguiente</button>
+</div>
+
+<div class="container-btn-home">
+    <button id="bnt-actualiza-productos">Actualizar</button>
+    <a href="http://localhost:8080/cart/detail" id="cart-view"> Ver carrito 🛒</a>
+</div>
 
 <script src="/api/public/js/products.js"></script>

@@ -1,0 +1,35 @@
+<div class="view-cart">
+    <h1>{{title}}</h1>
+    {{#if carts.length}}
+        <ul>
+            {{#each carts}}
+                <li>
+                    <strong>Carrito ID:</strong> {{this._id}} <br>
+                    {{#if this.hasProducts}}
+                        <ul>
+                            {{#each this.products}}
+                                <li class="product-item">
+                                    <div class="product-details">
+                                        <strong>Producto ID:</strong> {{this.productId}} <br>
+                                        <strong>Nombre:</strong> {{this.title}} <br>
+                                        <strong>Cantidad:</strong> {{this.quantity}}
+                                    </div>
+                                    <button class="remove-from-cart" data-product-id="{{this.productId}}">Eliminar producto 🗑️</button>
+                                </li>
+                            {{/each}}
+                        </ul>
+                    {{else}}
+                        <p>No hay productos en este carrito.</p>
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No hay carritos disponibles.</p>
+    {{/if}}
+</div>
+
+<div>
+    <a href="/" class="btn-home">Home</a>
+    <button id="btn-deleteAll">Eliminar todos los productos</button>
+</div>

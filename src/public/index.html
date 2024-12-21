@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar mas productos</title>
+</head>
+
+<body>
+    <h2>Agrega productos</h2>
+    <h1 style="color: red">Formulario de productos</h1>
+    <form action="/api/products" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="title">titulo</label>
+            <input type="text" name="title" id="title">
+        </div>
+        <div>
+            <label for="price">precio</label>
+            <input type="text" name="price" id="price">
+        </div>
+        <div>
+            <label for="currency">divisa</label>
+            <input type="text" name="currency" id="currency">
+        </div>
+        <div>
+            <label for="description">descripcion</label>
+            <input type="text" name="description" id="description">
+        </div>
+        <div>
+            <label for="stock">cantidad</label>
+            <input type="text" name="stock" id="stock">
+        </div>
+        <div>
+            <label for="category">categoria</label>
+            <input type="text" name="category" id="category">
+        </div>
+        <div>
+            <label for="code">codigo</label>
+            <input type="text" name="code" id="code">
+        </div>
+        <div>
+            <label for="status">estado</label>
+            <input type="text" name="status" id="status">
+        </div>
+        <div>
+            <label for="file">Imagen</label>
+            <input type="file" name="file" id="file">
+        </div>
+        <div>
+            <input type="submit" value="Guardar">
+        </div>
+    </form>
+</body>
+
+</html>

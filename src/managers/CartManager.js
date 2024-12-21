@@ -1,6 +1,6 @@
 import ErrorManager from "./ErrorManager.js";
 import { isValidID } from "../config/mongoose.config.js";
-import CartModel from "../models/cart.model.js";
+import CartModel from "../models/cart.models.js";
 
 export default class CartManager {
     #cartModel;

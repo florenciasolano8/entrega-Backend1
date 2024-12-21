@@ -2,13 +2,13 @@ import express from "express";
 import { config as configHandlebars } from "./config/handlebars.config.js";
 import { config as configWebsocket } from "./config/websocket.config.js";
 import { connectDB } from "./config/mongoose.config.js";
+import path from './utils/paths.js';
 // Importación de enrutadores
 import routerProducts from "./routes/products.router.js";
 import routerCart from "./routes/cart.router.js";
 import routerViewProduct  from "./routes/products.View.router.js";
 import routerViewCart from "./routes/cartsView.js";
 
-import path from 'path';
 
 // Se crea una instancia de la aplicación Express
 const app = express();

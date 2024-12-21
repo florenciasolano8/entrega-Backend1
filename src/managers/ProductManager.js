@@ -1,7 +1,7 @@
 import ErrorManager from "./ErrorManager.js";
 import { isValidID } from "../config/mongoose.config.js";
 import ProductModel from "../models/product.model.js";
-import { convertToBoolean } from "../utils/converter.js";
+import { convertToBool} from "../utils/converter.js";
 
 export default class ProductManager {
     #product;
@@ -65,7 +65,7 @@ export default class ProductManager {
         try {
             const product = await this.#product.create({
                 ...data,
-                status: convertToBoolean(data.status),
+                status: convertToBool(data.status),
             });
 
             return product;
@@ -81,7 +81,7 @@ export default class ProductManager {
             const newValues = {
                 ...product,
                 ...data,
-                status: data.status ? convertToBoolean(data.status) : product.status,
+                status: data.status ? convertToBool(data.status) : product.status,
             };
 
             product.set(newValues);

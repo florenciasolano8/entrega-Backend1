@@ -79,6 +79,32 @@ router.delete("/:cid/product/:pid", async (req, res) => {
     }
 });
 
+router.post("/:cid", async (req, res) => {
+    const cartId = req.params.cid;
+
+    try {
+        let cart = await cartManager.getOneById(cartId);
+        if (!cart) {
+            cart = await cartManager.insertOne({ product: [] });
+        }
+
+        res.status(200).json({ status: "success", payload: cart, message: "Carrito creado con exito." });
+    } catch (error) {
+        res.status(error.code || 500).json({ status: "error", message: error.message });
+    }
+});
+
+router.put("/:cid", async (req, res) => {
+    const cartId = req.params.cid;
+    const product = req.body.product;
+
+    try {
+        const updatedCart = await cartManager.updateCartById(cartId, product);
+        res.status(200).json({ status: "success", payload: updatedCart, message: "Carrito actualizado!" });
+    } catch (error) {
+        res.status(error.code || 500).json({ status: "error", message: error.message });
+    }
+});
 
 
 export default router;

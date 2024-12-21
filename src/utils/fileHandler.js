@@ -27,3 +27,16 @@ export const writeJsonFile = async (filepath, filename, content) =>{
         throw new Error("Error al leer el archivo");
     }
 };
+
+export const deleteFile = async (filepath, filename) => {
+    validateFilePathAndName(filepath, filename);
+    try {
+        await fs.promises.unlink(path.join(filepath, filename));
+    } catch (error) {
+        if (error.code === "ENOENT") {
+            console.warn("El archivo ${filename} no existe");
+        } else {
+            throw new Error("Error al eliminar el archivo ${filename}");
+        }
+    }
+};

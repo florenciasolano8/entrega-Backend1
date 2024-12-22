@@ -9,11 +9,8 @@ import routerCart from "./routes/cart.router.js";
 import routerViewProduct  from "./routes/products.View.router.js";
 import routerViewCart from "./routes/cartsView.js";
 
-
-// Se crea una instancia de la aplicación Express
 const app = express();
 
-// Se define el puerto en el que el servidor escuchará las solicitudes
 const PORT = 8080;
 
 connectDB();
@@ -37,6 +34,4 @@ app.use("*", (req, res) => {
 const httpServer = app.listen(PORT, () => {
   console.log(`Ejecutándose en http://localhost:${PORT}`);
 });
-
-// Configuración del servidor de websocket
 configWebsocket(httpServer);

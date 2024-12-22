@@ -12,16 +12,49 @@
 
     <section>
         <h3>Formulario de productos</h3>
-<form class="form" id="products-form">
-    <input type="text" name="title" placeholder="Ingresa el nombre" required>
-    <input type="text" name="description" placeholder="Ingresa la descripción" required>
-    <input type="text" name="code" placeholder="Ingresa el código" required>
-    <input type="number" name="price" placeholder="Ingresa el precio" required>
-    <input type="number" name="stock" placeholder="Ingresa el stock" required>
-    <input type="text" name="category" placeholder="Ingresa la categoría" required>
-    <div>¿Está activo? <input type="checkbox" name="status"></div>
-    <input type="submit" value="Guardar">
+<form class="form" id="products-form" method="POST" action="/api/products" enctype="multipart/form-data">
+    <div>
+        <label for="title">Título</label>
+        <input type="text" name="title" id="title" placeholder="Ingresa el nombre" required>
+    </div>
+    <div>
+        <label for="price">Precio</label>
+        <input type="number" name="price" id="price" placeholder="Ingresa el precio" required>
+    </div>
+    <div>
+        <label for="currency">Divisa</label>
+        <input type="text" name="currency" id="currency" placeholder="Ingresa la divisa" required>
+    </div>
+    <div>
+        <label for="description">Descripción</label>
+        <input type="text" name="description" id="description" placeholder="Ingresa la descripción" required>
+    </div>
+    <div>
+        <label for="stock">Stock</label>
+        <input type="number" name="stock" id="stock" placeholder="Ingresa el stock" required>
+    </div>
+    <div>
+        <label for="category">Categoría</label>
+        <input type="text" name="category" id="category" placeholder="Ingresa la categoría" required>
+    </div>
+    <div>
+        <label for="code">Código</label>
+        <input type="text" name="code" id="code" placeholder="Ingresa el código" required>
+    </div>
+    <div>
+        <label for="status">¿Está activo?</label>
+        <input type="checkbox" name="status" id="status">
+    </div>
+    <div>
+        <label for="file">Imagen</label>
+        <input type="file" name="file" id="file" placeholder="Ingresa una imagen">
+    </div>
+    <div>
+        <input type="submit" value="Guardar">
+    </div>
 </form>
+
+
     </section>
     
     <section>

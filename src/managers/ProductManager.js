@@ -9,8 +9,6 @@ export default class ProductManager {
     constructor() {
         this.#product = ProductModel;
     }
-
-    // Busca un producte por su ID
     async #findOneById(id) {
         if (!isValidID(id)) {
             throw new ErrorManager("ID inválido", 400);
@@ -27,31 +25,33 @@ export default class ProductManager {
 
     // Obtiene una lista de prod
     async getAll(params) {
-        try {
+        try {    
             const $and = [];
-
+    
             if (params?.title) $and.push({ title: { $regex: params.title, $options: "i" } });
             const filters = $and.length > 0 ? { $and } : {};
-
+    
             const sort = {
                 asc: { title: 1 },
                 desc: { title: -1 },
             };
-
+    
             const paginationOptions = {
-                limit: params?.limit || 10, // Número de documentos por página (por defecto 10)
-                page: params?.page || 1, // Página actual (por defecto 1)
-                sort: sort[params?.sort] ?? {}, // Ordenamiento (sin orden por defecto)
-                lean: true, // Convertir los resultados en objetos planos
+                limit: params?.limit || 10,
+                page: params?.page || 1,
+                sort: sort[params?.sort] ?? {}, 
+                lean: true, 
             };
-
-            return await this.#product.paginate(filters, paginationOptions);
+    
+            const paginatedProducts = await this.#product.paginate(filters, paginationOptions);
+    
+            return paginatedProducts;
         } catch (error) {
             throw ErrorManager.handleError(error);
         }
     }
+    
 
-    // Obtiene un prod específico por su ID
     async getOneById(id) {
         try {
             return await this.#findOneById(id);
@@ -60,7 +60,6 @@ export default class ProductManager {
         }
     }
 
-    // Inserta un producto
     async insertOne(data) {
         try {
             const product = await this.#product.create({
@@ -74,7 +73,6 @@ export default class ProductManager {
         }
     }
 
-    // Actualiza un prod en específico
     async updateOneById(id, data) {
         try {
             const product = await this.#findOneById(id);
@@ -93,7 +91,6 @@ export default class ProductManager {
         }
     }
 
-    // Elimina un prod en específico
     async deleteOneById(id) {
         try {
             const product = await this.#findOneById(id);

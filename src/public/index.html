@@ -12,45 +12,46 @@
     <h1 style="color: red">Formulario de productos</h1>
     <form action="/api/products" method="POST" enctype="multipart/form-data">
         <div>
-            <label for="title">titulo</label>
-            <input type="text" name="title" id="title">
+            <label for="title">Título</label>
+            <input type="text" name="title" id="title" placeholder="Ingresa el nombre" required minlength="3">
         </div>
         <div>
-            <label for="price">precio</label>
-            <input type="text" name="price" id="price">
+            <label for="price">Precio</label>
+            <input type="number" name="price" id="price" placeholder="Ingresa el precio" required>
         </div>
         <div>
-            <label for="currency">divisa</label>
-            <input type="text" name="currency" id="currency">
+            <label for="currency">Divisa</label>
+            <input type="text" name="currency" id="currency" placeholder="Ingresa la divisa" required>
         </div>
         <div>
-            <label for="description">descripcion</label>
-            <input type="text" name="description" id="description">
+            <label for="description">Descripción</label>
+            <input type="text" name="description" id="description" placeholder="Ingresa la descripción" required minlength="15">
         </div>
         <div>
-            <label for="stock">cantidad</label>
-            <input type="text" name="stock" id="stock">
+            <label for="stock">Cantidad</label>
+            <input type="number" name="stock" id="stock" placeholder="Ingresa el stock" required>
         </div>
         <div>
-            <label for="category">categoria</label>
-            <input type="text" name="category" id="category">
+            <label for="category">Categoría</label>
+            <input type="text" name="category" id="category" placeholder="Ingresa la categoría" required>
         </div>
         <div>
-            <label for="code">codigo</label>
-            <input type="text" name="code" id="code">
+            <label for="code">Código</label>
+            <input type="text" name="code" id="code" placeholder="Ingresa el código" required>
         </div>
         <div>
-            <label for="status">estado</label>
-            <input type="text" name="status" id="status">
+            <label for="status">¿Está activo?</label>
+            <input type="checkbox" name="status" id="status">
         </div>
         <div>
             <label for="file">Imagen</label>
-            <input type="file" name="file" id="file">
+            <input type="file" name="file" id="file" required>
         </div>
         <div>
             <input type="submit" value="Guardar">
         </div>
     </form>
+    
 </body>
 
 </html>

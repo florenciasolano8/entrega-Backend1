@@ -9,19 +9,37 @@ let prevPageBtn = document.getElementById("prev-page");
 let nextPageBtn = document.getElementById("next-page");
 let currentPageText = document.getElementById("current-page");
 
-//Muestra productos de la lista
+let currentPage = 1;
+let totalPages = 1;
+
+prevPageBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+        currentPage--;
+        loadProducts(currentPage); 
+    }
+});
+
+nextPageBtn.addEventListener("click", () => {
+    if (currentPage < totalPages) {
+        currentPage++;
+        loadProducts(currentPage); 
+    }
+});
+
+function loadProducts(page) {
+    const queryParams = new URLSearchParams(window.location.search);
+    queryParams.set("page", page);  
+    queryParams.set("category", categorySelect.value);
+    queryParams.set("sort", sortSelect.value); 
+    window.location.search = queryParams.toString(); 
+}
+
 socket.on("products-list", (data) => {
     console.log("Datos recibidos:", data);
     const products = data.products?.docs ?? [];
+    totalPages = data.products?.totalPages || 1; 
 
-    if (!Array.isArray(products)) {
-        console.error("Los datos no son un arreglo:", products);
-        return;
-    }
-    // Actualizo la lista de productos 
     productList.innerHTML = '';
-    productsList.innerHTML = '';
-
     products.forEach((product) => {
         productList.innerHTML += `
             <div class="product-card">
@@ -38,26 +56,13 @@ socket.on("products-list", (data) => {
                 </ul>
             </div>
         `;
-        productsList.innerHTML += `<li>Id: ${product.id} - Nombre ${product.title}</li>`;
     });
+
+    currentPageText.innerText = currentPage;
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages;
 });
 
-prevPageBtn.addEventListener("click", () => {
-    let currentPage = Number(currentPageText.innerText) || 1;
-    if (currentPage > 1) {
-        currentPage--;
-        loadProducts(currentPage);
-    }
-});
-
-nextPageBtn.addEventListener("click", () => {
-    let currentPage = Number(currentPageText.innerText) || 1;
-    currentPage++;
-    loadProducts(currentPage);
-});
-
-
-// Maneja el evento de eliminación de productos
 btnDeleteProduct.onclick = () => {
     const id = Number(inputProductId.value);
     inputProductId.value = "";
@@ -68,13 +73,11 @@ btnDeleteProduct.onclick = () => {
     }
 };
 
-// Manejo de errores
 socket.on("error-message", (data) => {
     errorMessage.innerText = data.message;
     console.log(data.message);
 });
 
-// Función para mostrar los detalles del producto en un modal
 function showProductModal(product) {
     const modalContent = `
     <div class="modal">
@@ -95,15 +98,12 @@ function showProductModal(product) {
     };
 }
 
-
-// Función para cargar los productos según la página actual
 function loadProducts(page) {
     const queryParams = new URLSearchParams(window.location.search);
     queryParams.set("page", page);
     window.location.search = queryParams.toString();
 }
 
-// Maneja el envío del formulario para agregar productos
 productsForm.onsubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -124,7 +124,6 @@ productsForm.onsubmit = (e) => {
         category: formData.get("category")
     });
 };
-// Evento para mostrar el modal al hacer clic en "Ver Detalles"
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("view-product-btn")) {
         const productId = e.target.getAttribute("data-id");

@@ -41,3 +41,48 @@ document.addEventListener("DOMContentLoaded", () => {
 document.getElementById('createProductBtn').addEventListener('click', () => {
     window.location.href = '/api/public';
 });
+function addToCart(product) {
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  const existingProductIndex = cart.findIndex(item => item.id === product.id);
+  if (existingProductIndex !== -1) {
+    cart[existingProductIndex].quantity += 1;
+  } else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1
+    });
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  showSuccessNotification();
+}
+
+function showSuccessNotification() {
+  Swal.fire({
+    title: '¡Producto añadido!',
+    text: 'El producto ha sido añadido a tu carrito.',
+    icon: 'success',
+    confirmButtonText: 'Aceptar'
+  });
+}
+
+document.querySelectorAll('button[data-product-id]').forEach(button => {
+  button.addEventListener('click', function() {
+    const productId = this.getAttribute('data-product-id');
+    
+    const productElement = this.closest('.products');
+    const productName = productElement.querySelector('ul li:first-child').textContent.split(':')[1].trim(); // Nombre
+    const productPrice = productElement.querySelector('ul li:nth-child(2)').textContent.split(':')[1].trim(); // Precio
+
+    const product = {
+      id: productId,
+      name: productName,
+      price: productPrice
+    };
+    addToCart(product);
+  });
+});

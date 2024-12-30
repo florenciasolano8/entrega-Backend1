@@ -120,7 +120,7 @@ button:hover {
     background-color: #e0a800;
 }
 .error404 img {
-    width: 200px; /* Ajusta el tamaño según lo que necesites */
-    height: auto; /* Mantiene la proporción de la imagen */
+    width: 200px;
+    height: auto; 
 }
 

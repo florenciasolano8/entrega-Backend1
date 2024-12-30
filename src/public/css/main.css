@@ -2,41 +2,125 @@
     box-sizing: border-box;
 }
 
-h1 {
-    color: rgba(255, 0, 0, 0.697);
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-h3{
-    color:rgb(230, 78, 78);
+.container-titles {
+    text-align: center;
+    margin: 20px 0;
 }
-.error404 {
+
+.title {
+    font-size: 2em;
+    color: rgba(255, 0, 0, 0.7);
+}
+
+#products-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.products {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.products img {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
 }
 
-.error404 img {
-    width: 400px;
+.products ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-.form input[type="text"], 
-.form input[type="number"] {
-    padding: 6px 12px;
-    font-size: 14px;
-    width: 100%; 
-    max-width: 300px;
+.products li {
+    margin-bottom: 10px;
 }
 
-.form input[type="submit"] {
-    padding: 8px 15px; 
-    font-size: 14px;
-    width: auto;
+button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
     cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-
-.form input[type="checkbox"] {
-    transform: scale(0.8); 
-    margin-right: 5px; 
+button:hover {
+    background-color: #218838;
 }
+
+#category, #sort {
+    padding: 10px;
+    margin: 5px 0;
+    width: 200px;
+}
+
+.input-text {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.pagina {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagina button {
+    padding: 10px 15px;
+}
+
+.pagina span {
+    font-size: 16px;
+}
+
+#btn-refresh-products-list, #btn-actualizar-productos, #createProductBtn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#btn-refresh-products-list:hover,
+#btn-actualizar-productos:hover,
+#createProductBtn:hover {
+    background-color: #0056b3;
+}
+
+#cart-view {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #ffc107;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#cart-view:hover {
+    background-color: #e0a800;
+}
+.error404 img {
+    width: 200px; /* Ajusta el tamaño según lo que necesites */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
+
